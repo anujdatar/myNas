@@ -1,0 +1,172 @@
+#!/bin/bash
+
+###################################################
+#                    text_format
+# Formats and echos text
+# Usage: text_format [format_style] [text]
+# Args:
+#      $1 - text style
+#      $2 - string text to echo
+# Result: 
+#      echos formatted text
+#      can only handle one formatting style at the moment
+#
+# Author:  Anuj Datar
+# Lisence: MIT, Jan 2020
+###################################################
+
+help_printer() {
+  local reset="\e[0m"
+  echo Bash output formatter. Can only handle one customization at once.
+  echo Usage: $0 [format_style] [text]
+  echo Example: $0 underlined \"Some text\"
+  echo Available format_style options:
+  echo -en "     \e[1m bold$reset, "
+  echo -en "\e[2m dim$reset, "
+  echo -en "\e[4m underlined$reset, "
+  echo -en "\e[5m blink$reset, "
+  echo -en "\e[7m inverted$reset, "
+  echo -en "hidden"
+  echo
+  echo Foreground colors:
+  echo -en "     \e[30;107m black $reset"
+  echo -en "\e[31m red $reset"
+  echo -en "\e[32m green $reset"
+  echo -en "\e[33m yellow $reset"
+  echo -en "\e[34m blue $reset"
+  echo -en "\e[35m magenta $reset"
+  echo -en "\e[36m cyan $reset"
+  echo -en "\e[90m dgray $reset"
+  echo
+  echo -en "     \e[37m lgray $reset"
+  echo -en "\e[91m lred $reset"
+  echo -en "\e[92m lgreen $reset"
+  echo -en "\e[93m lyellow $reset"
+  echo -en "\e[94m lblue $reset"
+  echo -en "\e[95m lmagenta $reset"
+  echo -en "\e[96m lcyan $reset"
+  echo -en "\e[97m white $reset"
+  echo
+  echo Background colors:
+  echo -en "     \e[40m bgblack $reset"
+  echo -en "\e[41m bgred $reset"
+  echo -en "\e[30;42m gbgreen $reset"
+  echo -en "\e[30;43m bgyellow $reset"
+  echo -en "\e[44m bgblue $reset"
+  echo -en "\e[45m bgmagenta $reset"
+  echo -en "\e[46m bgcyan $reset"
+  echo -en "\e[30;100m bgdgray $reset"
+  echo
+  echo -en "     "
+  echo -en "\e[30;47m bglgray $reset"
+  echo -en "\e[101m bglred $reset"
+  echo -en "\e[30;102m bglgreen $reset"
+  echo -en "\e[30;103m bglyellow $reset"
+  echo -en "\e[104m bglblue $reset"
+  echo -en "\e[105m bglmagenta $reset"
+  echo -en "\e[106m bglcyan $reset"
+  echo -en "\e[30;107m bgwhite $reset"
+  echo
+}
+
+text_formatter() {
+  local format_style=$1
+  local input_string=$2
+
+  local formatter=""
+  local resetter="\e[0m"
+
+  case $format_style in
+    # basic formatting
+    bold)
+      formatter="1";;
+    dim)
+      formatter="2";;
+    underlined)
+      formatter="4";;
+    blink)
+      formatter="5";;
+    inverted)
+      formatter="7";;
+    hidden)
+      formatter="8";;
+    # foreground color
+    defaultfg)
+      formatter="39";;
+    black)
+      formatter="30;107";;
+    red)
+      formatter="31";;
+    green)
+      formatter="32";;
+    yellow)
+      formatter="33";;
+    blue)
+      formatter="34";;
+    magenta)
+      formatter="35";;
+    cyan)
+      formatter="36";;
+    lgray)
+      formatter="37";;
+    dgray)
+      formatter="90";;
+    lred)
+      formatter="91";;
+    lgreen)
+      formatter="92";;
+    lyellow)
+      formatter="93";;
+    lblue)
+      formatter="94";;
+    lmagenta)
+      formatter="95";;
+    lcyan)
+      formatter="96";;
+    white)
+      formatter="97";;
+    # background colors
+    defaultbg)
+      formatter="49";;
+    bgblack)
+      formatter="40";;
+    bgred)
+      formatter="41";;
+    bggreen)
+      formatter="30;42";;
+    bgyellow)
+      formatter="30;43";;
+    bgblue)
+      formatter="44";;
+    bgmagenta)
+      formatter="45";;
+    bgcyan)
+      formatter="46";;
+    bglgray)
+      formatter="30;47";;
+    bgdgray)
+      formatter="30;100";;
+    bglred)
+      formatter="101";;
+    bglgreen)
+      formatter="30;102";;
+    bglyellow)
+      formatter="30;103";;
+    bglblue)
+      formatter="104";;
+    bglmagenta)
+      formatter="105";;
+    bglcyan)
+      formatter="106";;
+    bgwhite)
+      formatter="30;107";;
+    -h|--help)
+      help_printer;;
+    *)
+      echo -en "\e[1mINVALID OPTIONS\e[0m"
+      help_printer;;
+  esac
+  echo -en "\e[${formatter}m$input_string$resetter"
+}
+
+text_formatter "$1" "$2"

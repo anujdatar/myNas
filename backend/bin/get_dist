@@ -1,0 +1,33 @@
+#!/bin/bash
+
+###################################################
+#                   get_dist
+#
+# Echo distribution type of linux os installed
+# Usage: get_dist
+# Result:
+#      echos linux distribution
+#      works for Fedora, Ubuntu/Debian, Arch/Manjaro
+#
+# Author:  Anuj Datar
+# Lisence: MIT, Jan 2020
+###################################################
+
+get_dist() {
+  local filename="/etc/os-release"
+
+  if [[ $(grep -i fedora "$filename") ]]; then
+    echo "fedora"
+  elif [[ $(grep -i arch "$filename") || $(grep -i manjaro $filename) ]]; then
+    echo "arch"
+  elif [[ $(grep -i debian "$filename") ]]; then
+    echo "debian"
+  else
+    format_red "Unable to use your system's package manager\n"
+    format_red "Please check params or get in touch with the dev on GitHub\n"
+    format_red "Sorry for the inconvenience. Thanks.\n"
+    exit 1
+  fi
+}
+
+get_dist

@@ -1,0 +1,119 @@
+#!/bin/bash
+
+###################################################
+#                 package_manager
+#
+# Use distribution's package manager for upgrade/install
+# Usage: package_manager [command [--args]]
+# Result: 
+#      use distribution package manager for action
+#      works for Fedora, Ubuntu/Debian, Arch/Manjaro
+#      Intentionally does not support package removal
+#
+# Author:  Anuj Datar
+# Lisence: MIT, Feb 2020
+###################################################
+
+print_help() {
+  echo
+  echo "Use system package manager"
+  echo
+  echo "Usage: package_manager [command [--args]]"
+  echo "    package_manager update"
+  echo "    package_manager upgrade"
+  echo "    package_manager install xyz [abc...]"
+  echo "    package_manager check xyz [abc...]"
+  echo
+  echo "Works for Debian/Ubuntu, Fedora and Arch/Manjaro based systems"
+  echo
+}
+
+if [[ $# -lt 1 ]] || [[ $1 == "install" && $# -lt 2 ]] || [[ $1 == "check" && $# -lt 2 ]]; then
+  echo "Incorrect number of args"
+  print_help
+  exit 1
+fi
+
+dist=$(get_dist)
+if [[ $? == 1 ]]; then
+  echo $dist
+  text_format red "Script Error. Exiting\n"
+  exit 1
+fi
+# Define package manager operations
+if [[ $dist == "debian" ]]; then
+  update="apt-get update"
+  upgrade="apt-get upgrade"
+  install="apt-get install"
+  check="dpkg-query -s"
+elif [[ $dist == "fedora" ]]; then
+  update="dnf check-update"
+  upgrade="dnf upgrade"
+  install="dnf install"
+  check="dnf list installed"
+elif [[ $dist == "arch" ]]; then
+  update="pacman -Sy"
+  upgrade="pacman -Syu"
+  install="pacman -S"
+  check="pacman -Qi"
+fi
+
+# Use package manager for actions
+if [[ $1 == "update" ]]; then
+  echo "Updating package databases, running: $update"
+  # sudo $update
+elif [[ $1 == "upgrade" ]]; then
+  echo "Upgraging, running: $upgrade"
+  # sudo $upgrade
+elif [[ $1 == "install" ]]; then
+  shift
+  echo "Installing packages, running: $install $@"
+  # sudo $install $@
+elif [[ $1 == "check" ]]; then
+  shift
+  echo "Checking package dependencies: $check $@"
+  not_installed=""
+  
+  for pkg in $@; do
+    echo -n "Checking package: "
+    text_format yellow "$pkg\n"
+    $check $pkg &> /dev/null
+
+    if [[ $? == 1 ]]; then
+      text_format yellow "    $pkg"
+      echo -n " is "
+      text_format red "not installed\n"
+      not_installed="$not_installed $pkg"
+    else
+      text_format yellow "    $pkg"
+      echo -n " is "
+      text_format green "installed\n"
+    fi
+  done
+
+  if [[ "$not_installed" == "" ]]; then
+    echo -e "\nDependencies OK. Proceeding ..."; echo
+  else
+    echo -e "Need to install missing dependencies: $not_installed"; echo
+    # check=0
+    question="Would you like to install dependencies to continue? [Y]/n: "
+    yes="Installing dependencies"
+    no="Installation cancelled.. Bye!!"
+    yes_no_prompt "$question" "$yes" "$no"
+  fi
+
+  if [[ $? == 1 ]]; then
+    # text_format red "Exiting installation. Thank you\n"
+    exit 1
+  fi
+
+  echo "Running: $install $not_installed"; echo
+  # sudo $install $not_installed
+
+  if [[ $? == 1 ]]; then
+    text_format red "Dependency install unsuccessful. Exiting installation\n"
+    exit 1
+  fi
+
+  text_format green "Dependency install successful\n"
+fi

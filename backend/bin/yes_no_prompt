@@ -1,0 +1,66 @@
+#!/bin/bash
+
+###################################################
+#                   yes_no_prompt
+# Display yes/no prompt in cli
+# Usage: yes_no_prompt [question] [yes] [no]
+# Args:
+#      $1 - question string echoed in cli
+#      $2 - response string when yes is entered
+#      $3 - response string when no is entered
+# Result: 
+#      echos response based on yes/no selection
+#      returns 0 for yes, 1 for no
+#
+# Author:  Anuj Datar
+# Lisence: MIT, Jan 2020
+###################################################
+
+help_printer() {
+  echo
+  echo CLI prompt to raise a yes/no question.
+  echo
+  echo Usage: $0 [question] [if_yes] [if_no]
+  echo
+  echo Returns:
+  echo "    prints if_yes/if_no string"
+  echo "    returns 0 if yes, 1 if no"
+  echo
+  echo Note: all three arguments needed
+  echo
+}
+
+yes_no_question() {
+  if [[ $1 == "--help" ]]; then
+    help_printer
+    exit 0
+  elif [[ $# -lt 3 ]]; then
+    echo "Incorrect number of arguments to yes/no function"
+    help_printer
+    exit 1
+  fi
+  
+  local question="$1"
+  local yes="$2"
+  local no="$3"
+  
+  while true; do
+    read -p "$question"
+
+    case $REPLY in
+      ""|[Yy]|[Yy][Ee][Ss]) # blank or y or yes, any case
+        # eval $yes
+        echo $yes
+        break;;
+      [Nn]|[Nn][Oo]) # n or no, any case
+        # eval $no
+        echo $no
+        return 1
+        break;;
+      *)
+        echo -e "Invalid input";;
+      esac
+  done
+}
+
+yes_no_question "$1" "$2" "$3"

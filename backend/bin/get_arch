@@ -1,0 +1,30 @@
+#! /bin/bash
+
+###################################################
+#                   get_arch
+#
+# Echo os architecture for node manager
+# Usage: get_arch
+# Result: 
+#      echos package manager used by distribution
+#
+# Author:  Anuj Datar
+# Lisence: MIT, Jan 2020
+###################################################
+
+get_sys_arch() {
+  case $(uname -m) in
+    x86_64)
+      echo "linux-x64";;
+    aarch64|arm64)
+      echo "linux-arm64";;
+    armhf)
+      echo "linux-armv7l";;
+    *)
+      echo "Unable to recognize system architecture"
+      echo "Please contact developer on GitHub for solution"
+      exit 1;
+  esac
+}
+
+get_sys_arch
