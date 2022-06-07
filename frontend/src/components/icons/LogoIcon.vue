@@ -1,5 +1,20 @@
+<script setup lang="ts">
+const props = defineProps({
+  width: {
+    type: String,
+    required: false,
+    default: '1rem'
+  },
+  height: {
+    type: String,
+    required: false,
+    default: '1rem'
+  }
+})
+</script>
+
 <template>
-  <svg aria-hidden="true" role="img" width="1em" height="1em"
+  <svg aria-hidden="true" role="img" :width="props.width" :height="props.height"
     preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20" version="1.1"
     id="logo" xmlns="http://www.w3.org/2000/svg"
     xmlns:svg="http://www.w3.org/2000/svg">

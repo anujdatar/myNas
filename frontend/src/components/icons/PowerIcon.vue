@@ -1,7 +1,22 @@
+<script setup lang="ts">
+const props = defineProps({
+  width: {
+    type: String,
+    required: false,
+    default: '1rem'
+  },
+  height: {
+    type: String,
+    required: false,
+    default: '1rem'
+  }
+})
+</script>
+
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img"
-    width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
-    viewBox="0 0 24 24">
+    :width="props.width" :height="props.height"
+    preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
     <path fill="currentColor"
       d="M12 13a1 1 0 0 0 1-1V2a1 1 0 0 0-2 0v10a1 1 0 0 0 1 1Z" />
     <path fill="currentColor"
