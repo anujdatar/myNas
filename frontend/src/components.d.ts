@@ -5,9 +5,20 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BurgerIcon: typeof import('./components/icons/BurgerIcon.vue')['default']
+    CancelIcon: typeof import('./components/icons/CancelIcon.vue')['default']
+    DesktopIcon: typeof import('./components/icons/DesktopIcon.vue')['default']
+    DownArrowIcon: typeof import('./components/icons/DownArrowIcon.vue')['default']
+    LogoIcon: typeof import('./components/icons/LogoIcon.vue')['default']
+    LogoutIcon: typeof import('./components/icons/LogoutIcon.vue')['default']
+    MoonIcon: typeof import('./components/icons/MoonIcon.vue')['default']
     MyNasSidebar: typeof import('./components/MyNasSidebar.vue')['default']
+    PowerIcon: typeof import('./components/icons/PowerIcon.vue')['default']
+    RestartIcon: typeof import('./components/icons/RestartIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SettingsIcon: typeof import('./components/icons/SettingsIcon.vue')['default']
+    SunIcon: typeof import('./components/icons/SunIcon.vue')['default']
   }
 }
 
