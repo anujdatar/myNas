@@ -9,6 +9,11 @@ const props = defineProps({
     type: String,
     required: false,
     default: '1rem'
+  },
+  color: {
+    type: String,
+    required: false,
+    default: 'currentColor'
   }
 })
 </script>
@@ -17,7 +22,7 @@ const props = defineProps({
   <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img"
     :width="props.width" :height="props.height"
     preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16">
-    <path fill="currentColor" fill-rule="evenodd"
+    <path :fill="props.color" fill-rule="evenodd"
       d="M12.75 8a4.5 4.5 0 0 1-8.61 1.834l-1.391.565A6.001 6.001 0 0 0 14.25 8A6 6 0 0 0 3.5 4.334V2.5H2v4l.75.75h3.5v-1.5H4.352A4.5 4.5 0 0 1 12.75 8z"
       clip-rule="evenodd" />
   </svg>
